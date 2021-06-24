@@ -22,6 +22,7 @@ use CoreShop\Payum\Unzer\Action\CaptureAction;
 use CoreShop\Payum\Unzer\Action\ConvertPaymentAction;
 use CoreShop\Payum\Unzer\Action\NotifyAction;
 use CoreShop\Payum\Unzer\Action\StatusAction;
+use Heidelpay\PhpPaymentApi\Request;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 
@@ -60,24 +61,24 @@ class UnzerGatewayFactory extends GatewayFactory
             ];
             $config->defaults($config['payum.default_options']);
             $config['payum.required_options'] = [
-                'gatewayType',
-                'securitySender',
-                'userLogin',
-                'userPassword',
-                'transactionChannel'
+//                'gatewayType'
             ];
 
             $config['payum.api'] = function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
+                $test = new Request();
+
                 return new Api(
                     $config['gatewayType'],
                     [
-                        'securitySender' => $config['securitySender'],
-                        'userLogin' => $config['userLogin'],
-                        'userPassword' => $config['userPassword'],
-                        'transactionChannel' => $config['transactionChannel'],
-                        'sandboxMode' => $config['sandboxMode'],
+                        'userLogin' => 'keychain',
+                        'userPassword' => '123',
+//                        'securitySender' => $config['securitySender'],
+//                        'userLogin' => $config['userLogin'],
+//                        'userPassword' => $config['userPassword'],
+//                        'transactionChannel' => $config['transactionChannel'],
+//                        'sandboxMode' => $config['sandboxMode'],
                     ],
                     $config['payum.http_client'],
                     $config['httplug.message_factory']
